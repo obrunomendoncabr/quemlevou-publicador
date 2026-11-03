@@ -19,7 +19,9 @@ import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 
-API = "https://graph.instagram.com/" + os.environ.get("IG_API_VERSION", "v23.0")
+VERSAO = os.environ.get("IG_API_VERSION", "v23.0")
+API = None  # definido em main(): token do Facebook (EAA..., login para empresas) usa graph.facebook.com;
+            # token do Instagram (IGAA..., login do Instagram) usa graph.instagram.com
 RAIZ = pathlib.Path(__file__).resolve().parent.parent
 AGENDADOS = RAIZ / "posts" / "agendados"
 PUBLICADOS = RAIZ / "posts" / "publicados"
@@ -72,10 +74,14 @@ def url_publica(arquivo):
 
 
 def verificar():
-    conta = chamar("GET", "me", fields="user_id,username,account_type")
-    print(f"Conta: @{conta.get('username')} ({conta.get('account_type')})")
-    if str(conta.get("user_id")) != USER_ID:
-        print(f"Atenção: IG_USER_ID ({USER_ID}) é diferente do ID da conta do token ({conta.get('user_id')}).")
+    if "graph.facebook.com" in API:
+        conta = chamar("GET", USER_ID, fields="username,name")
+        print(f"Conta: @{conta.get('username')} (token do Facebook, login para empresas)")
+    else:
+        conta = chamar("GET", "me", fields="user_id,username,account_type")
+        print(f"Conta: @{conta.get('username')} ({conta.get('account_type')})")
+        if str(conta.get("user_id")) != USER_ID:
+            print(f"Atenção: IG_USER_ID ({USER_ID}) é diferente do ID da conta do token ({conta.get('user_id')}).")
     cota = chamar("GET", f"{USER_ID}/content_publishing_limit", fields="config,quota_usage")
     print(f"Cota de publicação: {json.dumps(cota.get('data', cota), ensure_ascii=False)}")
     print("Tudo certo, dá pra publicar.")
@@ -185,9 +191,11 @@ def vencidos():
 
 
 def main():
-    global TOKEN, USER_ID
+    global TOKEN, USER_ID, API
     modo = sys.argv[1] if len(sys.argv) > 1 else "verificar"
     TOKEN, USER_ID = segredo("IG_ACCESS_TOKEN"), segredo("IG_USER_ID")
+    host = "graph.facebook.com" if TOKEN.startswith("EAA") else "graph.instagram.com"
+    API = f"https://{host}/{VERSAO}"
     if modo == "verificar":
         verificar()
     elif modo == "publicar":
