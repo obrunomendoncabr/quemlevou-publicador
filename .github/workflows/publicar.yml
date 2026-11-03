@@ -1,0 +1,52 @@
+name: Publicar
+
+on:
+  schedule:
+    # a cada 30 minutos; o GitHub pode atrasar alguns minutos em horário de pico
+    - cron: "7,37 * * * *"
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: "verificar (só testa a conexão) ou publicar"
+        type: choice
+        options: [verificar, publicar]
+        default: verificar
+      pasta:
+        description: "Opcional: publicar esta pasta agora, ignorando a data (ex.: posts/agendados/2026-10-28-deixa-teu-arroba)"
+        required: false
+        default: ""
+
+concurrency:
+  group: publicador
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Rodar publicador
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          MODO: ${{ inputs.modo || 'publicar' }}
+          PASTA: ${{ inputs.pasta }}
+        run: python scripts/publicar.py "$MODO" "$PASTA"
+
+      - name: Mover publicados
+        run: |
+          if [ -n "$(git status --porcelain posts)" ]; then
+            git config user.name "publicador"
+            git config user.email "publicador@users.noreply.github.com"
+            git add -A posts
+            git commit -m "Publicado no Instagram"
+            git push
+          fi
