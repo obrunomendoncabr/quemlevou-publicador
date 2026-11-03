@@ -39,7 +39,7 @@ Em **Actions › Publicar › Run workflow**:
 
 Em **Settings › Secrets and variables › Actions**:
 
-- `IG_ACCESS_TOKEN` token da Meta do @quemlevou (vence em uns 60 dias, precisa renovar)
+- `IG_ACCESS_TOKEN` token da Meta do @quemlevou. Hoje é um token de usuário do sistema (começa com `EAA`), gerado no Login do Facebook para Empresas, e não vence. O script também aceita token do login do Instagram (`IGAA`), que vence em uns 60 dias.
 - `IG_USER_ID` ID da conta @quemlevou
 
 ## Atenção
@@ -48,4 +48,4 @@ O repositório é público porque a Meta busca os vídeos e imagens pela URL. Qu
 
 ## Token
 
-O `token.json` guarda só a data em que o token foi gerado (nunca o token). Ao gerar um token novo, atualiza `gerado_em`.
+O `token.json` guarda só a data e o tipo do token (nunca o token). O atual é de usuário do sistema e não vence; se um dia trocar por token do Instagram, atualiza `gerado_em` e cria um vigia de renovação.
