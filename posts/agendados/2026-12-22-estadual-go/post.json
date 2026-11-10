@@ -1,0 +1,23 @@
+{
+ "titulo": "Top 5 · Campeonato Goiano",
+ "publicar_em": "2026-12-22T16:00:00-03:00",
+ "tipo": "feed",
+ "marcar_imagem": {
+  "01.jpg": [
+   {
+    "username": "goiasoficial",
+    "x": 0.224,
+    "y": 0.307
+   },
+   {
+    "username": "acgoianiense",
+    "x": 0.224,
+    "y": 0.432
+   }
+  ]
+ },
+ "colaboradores": [
+  "goiasoficial",
+  "acgoianiense"
+ ]
+}

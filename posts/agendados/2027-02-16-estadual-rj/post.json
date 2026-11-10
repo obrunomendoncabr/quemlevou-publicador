@@ -1,0 +1,34 @@
+{
+ "titulo": "Top 5 · Campeonato Carioca",
+ "publicar_em": "2027-02-16T16:00:00-03:00",
+ "tipo": "feed",
+ "marcar_imagem": {
+  "01.jpg": [
+   {
+    "username": "flamengo",
+    "x": 0.224,
+    "y": 0.307
+   },
+   {
+    "username": "fluminensefc",
+    "x": 0.224,
+    "y": 0.432
+   },
+   {
+    "username": "vascodagama",
+    "x": 0.224,
+    "y": 0.556
+   },
+   {
+    "username": "botafogo",
+    "x": 0.224,
+    "y": 0.681
+   }
+  ]
+ },
+ "colaboradores": [
+  "flamengo",
+  "fluminensefc",
+  "vascodagama"
+ ]
+}
