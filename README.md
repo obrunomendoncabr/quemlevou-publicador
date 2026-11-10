@@ -56,3 +56,7 @@ O repositório é público porque a Meta busca os vídeos e imagens pela URL. Qu
 ## Token
 
 O `token.json` guarda só a data e o tipo do token (nunca o token). O atual é de usuário do sistema e não vence; se um dia trocar por token do Instagram, atualiza `gerado_em` e cria um vigia de renovação.
+
+
+## Marcação em foto e carrossel
+Em post de imagem a marcação precisa de posição. No post.json: `"marcar_imagem": {"02.jpg": [{"username": "gremio", "x": 0.1, "y": 0.4}]}` (x e y de 0 a 1, a partir do canto de cima à esquerda). Se a Meta recusar algum @, aquela imagem sai sem marcação e o post não trava.

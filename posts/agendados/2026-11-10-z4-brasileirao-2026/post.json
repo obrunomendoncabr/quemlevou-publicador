@@ -1,5 +1,46 @@
 {
  "titulo": "Brasileirão 2026 · chance de cair (carrossel)",
  "publicar_em": "2026-11-10T16:20:00-03:00",
- "tipo": "feed"
+ "tipo": "feed",
+ "marcar_imagem": {
+  "02.jpg": [
+   {
+    "username": "clubedoremo",
+    "x": 0.101,
+    "y": 0.33
+   },
+   {
+    "username": "gremio",
+    "x": 0.101,
+    "y": 0.395
+   },
+   {
+    "username": "corinthians",
+    "x": 0.101,
+    "y": 0.46
+   },
+   {
+    "username": "ecvitoria",
+    "x": 0.101,
+    "y": 0.525
+   },
+   {
+    "username": "scinternacional",
+    "x": 0.101,
+    "y": 0.59
+   }
+  ],
+  "03.jpg": [
+   {
+    "username": "corinthians",
+    "x": 0.222,
+    "y": 0.363
+   },
+   {
+    "username": "gremio",
+    "x": 0.778,
+    "y": 0.363
+   }
+  ]
+ }
 }

@@ -133,6 +133,21 @@ def publicar_reels(pasta, legenda, meta, meta_arq):
     shutil.move(str(pasta), str(PUBLICADOS / pasta.name))
 
 
+def criar_imagem(img, meta, **params):
+    # marcação em foto precisa de posição: "marcar_imagem": {"02.jpg": [{"username": "gremio", "x": 0.1, "y": 0.4}]}
+    # (x e y de 0 a 1, a partir do canto de cima à esquerda). Se a Meta recusar, publica a imagem sem marcação.
+    tags = [dict(t, username=t["username"].lstrip("@")) for t in meta.get("marcar_imagem", {}).get(img.name, [])][:20]
+    params["image_url"] = url_publica(img)
+    if tags:
+        try:
+            c = chamar("POST", f"{USER_ID}/media", _tolerante=True, user_tags=json.dumps(tags), **params)
+            print(f"  {img.name}: marcando {', '.join('@' + t['username'] for t in tags)}")
+            return c
+        except ErroMeta as e:
+            print(f"Aviso: a Meta recusou a marcação em {img.name}, publicando sem. {e}")
+    return chamar("POST", f"{USER_ID}/media", **params)
+
+
 def publicar_pasta(pasta):
     meta_arq0 = pasta / "post.json"
     meta0 = json.loads(meta_arq0.read_text(encoding="utf-8")) if meta_arq0.exists() else {}
@@ -170,12 +185,12 @@ def publicar_pasta(pasta):
 
     print(f"Publicando {pasta.name} com {len(imagens)} imagem(ns)")
     if len(imagens) == 1:
-        container = chamar("POST", f"{USER_ID}/media", image_url=url_publica(imagens[0]), caption=legenda)
+        container = criar_imagem(imagens[0], meta, caption=legenda)
         esperar_pronto(container["id"], imagens[0].name)
     else:
         filhos = []
         for img in imagens:
-            c = chamar("POST", f"{USER_ID}/media", image_url=url_publica(img), is_carousel_item="true")
+            c = criar_imagem(img, meta, is_carousel_item="true")
             esperar_pronto(c["id"], img.name)
             filhos.append(c["id"])
             print(f"  {img.name} ok")
