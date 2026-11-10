@@ -1,5 +1,9 @@
 {
  "titulo": "Final da Copa 2022",
  "publicar_em": "2026-11-25T19:00:00-03:00",
- "tipo": "reels"
+ "tipo": "reels",
+ "marcar": [
+  "afaseleccion",
+  "equipedefrance"
+ ]
 }

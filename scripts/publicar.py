@@ -40,7 +40,11 @@ TOKEN = None
 USER_ID = None
 
 
-def chamar(metodo, caminho, **params):
+class ErroMeta(Exception):
+    pass
+
+
+def chamar(metodo, caminho, _tolerante=False, **params):
     params["access_token"] = TOKEN
     dados = urllib.parse.urlencode(params).encode()
     url = f"{API}/{caminho}"
@@ -54,7 +58,10 @@ def chamar(metodo, caminho, **params):
     except urllib.error.HTTPError as e:
         corpo = e.read().decode(errors="replace")
         # nunca imprime a URL inteira, ela carrega o token
-        sys.exit(f"Erro da Meta em {metodo} {caminho} ({e.code}): {corpo}")
+        msg = f"Erro da Meta em {metodo} {caminho} ({e.code}): {corpo}"
+        if _tolerante:
+            raise ErroMeta(msg)
+        sys.exit(msg)
 
 
 def esperar_pronto(container_id, rotulo, tentativas=30):
@@ -96,7 +103,24 @@ def publicar_reels(pasta, legenda, meta, meta_arq):
     capa = pasta / "capa.jpg"
     if capa.exists():
         params["cover_url"] = url_publica(capa)
-    container = chamar("POST", f"{USER_ID}/media", **params)
+    # marcação ("marcar": até 20 @) e collab ("colaboradores": até 3 @), opcionais no post.json
+    marcar = [u.lstrip("@") for u in meta.get("marcar", [])][:20]
+    colab = [u.lstrip("@") for u in meta.get("colaboradores", [])][:3]
+    extras = {}
+    if marcar:
+        extras["user_tags"] = json.dumps([{"username": u} for u in marcar])
+    if colab:
+        extras["collaborators"] = json.dumps(colab)
+    if extras:
+        try:
+            container = chamar("POST", f"{USER_ID}/media", _tolerante=True, **params, **extras)
+            print(f"Marcando: {', '.join('@' + u for u in marcar) or '-'} | Collab: {', '.join('@' + u for u in colab) or '-'}")
+        except ErroMeta as e:
+            # um @ errado não pode travar a fila: publica sem marcação e avisa
+            print(f"Aviso: a Meta recusou a marcação/collab, publicando sem. {e}")
+            container = chamar("POST", f"{USER_ID}/media", **params)
+    else:
+        container = chamar("POST", f"{USER_ID}/media", **params)
     # vídeo demora mais pra processar do que imagem: espera até ~7 minutos
     esperar_pronto(container["id"], videos[0].name, tentativas=84)
     publicado = chamar("POST", f"{USER_ID}/media_publish", creation_id=container["id"])

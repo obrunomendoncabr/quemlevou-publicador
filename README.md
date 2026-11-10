@@ -22,6 +22,13 @@ posts/
 
 Uma pasta com `.mp4` vira reels sozinha. Também dá pra marcar `"tipo": "reels"`.
 
+Campos opcionais no `post.json` do reels:
+
+- `"marcar": ["flamengo", "corinthians"]` marca as contas no vídeo (até 20). Não depende de aceite.
+- `"colaboradores": ["conta"]` convida pra collab (até 3). Só aparece no perfil da outra conta se ela aceitar; use só com quem combinou antes.
+
+Se a Meta recusar algum @ (conta inexistente, por exemplo), o reels sai sem marcação e o aviso fica no log da execução.
+
 ### Feed e story
 
 Igual ao publicador original: `01.jpg`, `02.jpg`… (1 a 10, 1080×1350) com `legenda.txt` viram post ou carrossel; `"tipo": "story"` publica cada imagem como story (1080×1920, sem legenda).

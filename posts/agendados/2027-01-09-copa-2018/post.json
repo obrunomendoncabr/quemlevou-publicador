@@ -1,5 +1,9 @@
 {
  "titulo": "Final da Copa 2018",
  "publicar_em": "2027-01-09T19:00:00-03:00",
- "tipo": "reels"
+ "tipo": "reels",
+ "marcar": [
+  "equipedefrance",
+  "hns_cff"
+ ]
 }
