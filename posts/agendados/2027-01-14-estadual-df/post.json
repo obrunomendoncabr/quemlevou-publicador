@@ -1,0 +1,17 @@
+{
+ "titulo": "Top 6 · Campeonato Brasiliense",
+ "publicar_em": "2027-01-14T16:00:00-03:00",
+ "tipo": "feed",
+ "marcar_imagem": {
+  "01.jpg": [
+   {
+    "username": "brasiliensefc",
+    "x": 0.224,
+    "y": 0.402
+   }
+  ]
+ },
+ "colaboradores": [
+  "brasiliensefc"
+ ]
+}

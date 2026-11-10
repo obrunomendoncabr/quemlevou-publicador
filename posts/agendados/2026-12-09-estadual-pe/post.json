@@ -1,0 +1,17 @@
+{
+ "titulo": "Top 5 · Campeonato Pernambucano",
+ "publicar_em": "2026-12-09T16:00:00-03:00",
+ "tipo": "feed",
+ "marcar_imagem": {
+  "01.jpg": [
+   {
+    "username": "sportrecife",
+    "x": 0.224,
+    "y": 0.307
+   }
+  ]
+ },
+ "colaboradores": [
+  "sportrecife"
+ ]
+}

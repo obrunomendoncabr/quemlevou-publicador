@@ -138,13 +138,20 @@ def criar_imagem(img, meta, **params):
     # (x e y de 0 a 1, a partir do canto de cima à esquerda). Se a Meta recusar, publica a imagem sem marcação.
     tags = [dict(t, username=t["username"].lstrip("@")) for t in meta.get("marcar_imagem", {}).get(img.name, [])][:20]
     params["image_url"] = url_publica(img)
+    extras = {}
     if tags:
+        extras["user_tags"] = json.dumps(tags)
+    # collab ("colaboradores": até 3 @) só vale para post de uma imagem; no carrossel vai no container final
+    colab = [u.lstrip("@") for u in meta.get("colaboradores", [])][:3]
+    if colab and "is_carousel_item" not in params:
+        extras["collaborators"] = json.dumps(colab)
+    if extras:
         try:
-            c = chamar("POST", f"{USER_ID}/media", _tolerante=True, user_tags=json.dumps(tags), **params)
-            print(f"  {img.name}: marcando {', '.join('@' + t['username'] for t in tags)}")
+            c = chamar("POST", f"{USER_ID}/media", _tolerante=True, **extras, **params)
+            print(f"  {img.name}: marcando {', '.join('@' + t['username'] for t in tags) or '-'} | collab: {', '.join('@' + u for u in colab) or '-'}")
             return c
         except ErroMeta as e:
-            print(f"Aviso: a Meta recusou a marcação em {img.name}, publicando sem. {e}")
+            print(f"Aviso: a Meta recusou a marcação/collab em {img.name}, publicando sem. {e}")
     return chamar("POST", f"{USER_ID}/media", **params)
 
 
