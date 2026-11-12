@@ -201,8 +201,18 @@ def publicar_pasta(pasta):
             esperar_pronto(c["id"], img.name)
             filhos.append(c["id"])
             print(f"  {img.name} ok")
-        container = chamar("POST", f"{USER_ID}/media", media_type="CAROUSEL",
-                           children=",".join(filhos), caption=legenda)
+        base = dict(media_type="CAROUSEL", children=",".join(filhos), caption=legenda)
+        colab = [u.lstrip("@") for u in meta.get("colaboradores", [])][:3]
+        container = None
+        if colab:
+            try:
+                container = chamar("POST", f"{USER_ID}/media", _tolerante=True,
+                                   collaborators=json.dumps(colab), **base)
+                print(f"  carrossel: collab com {', '.join('@' + u for u in colab)}")
+            except ErroMeta as e:
+                print(f"Aviso: a Meta recusou o collab do carrossel, publicando sem. {e}")
+        if container is None:
+            container = chamar("POST", f"{USER_ID}/media", **base)
         esperar_pronto(container["id"], "carrossel")
     publicado = chamar("POST", f"{USER_ID}/media_publish", creation_id=container["id"])
     link = chamar("GET", publicado["id"], fields="permalink").get("permalink")
