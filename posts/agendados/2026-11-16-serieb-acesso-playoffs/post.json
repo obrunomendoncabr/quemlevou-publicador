@@ -1,0 +1,13 @@
+{
+  "titulo": "Série B 2026 · acesso e playoffs (carrossel)",
+  "publicar_em": "2026-11-16T16:21:00-03:00",
+  "tipo": "feed",
+  "colaboradores": ["ecjuventude", "fortalezaec", "criciumaoficial"],
+  "marcar_imagem": {
+    "01.jpg": [{"username": "ecjuventude", "x": 0.338, "y": 0.204}],
+    "02.jpg": [{"username": "ecjuventude", "x": 0.119, "y": 0.656}],
+    "03.jpg": [{"username": "criciumaoficial", "x": 0.208, "y": 0.322},
+               {"username": "fortalezaec", "x": 0.792, "y": 0.322}],
+    "04.jpg": [{"username": "acgoianiense", "x": 0.208, "y": 0.322}]
+  }
+}
