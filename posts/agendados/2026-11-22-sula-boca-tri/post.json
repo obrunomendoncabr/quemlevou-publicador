@@ -1,0 +1,21 @@
+{
+  "titulo": "Final Sul-Americana 2026 · Boca tricampeão",
+  "publicar_em": "2026-11-22T14:02:00-03:00",
+  "colaboradores": [
+    "atletico"
+  ],
+  "marcar_imagem": {
+    "01.jpg": [
+      {
+        "username": "atletico",
+        "x": 0.17,
+        "y": 0.28
+      },
+      {
+        "username": "bocajrs",
+        "x": 0.83,
+        "y": 0.28
+      }
+    ]
+  }
+}
